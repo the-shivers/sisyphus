@@ -7,31 +7,24 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Header -->
+  <!-- TOP: Header bar -->
   <header class="header">
     <button class="header-btn" id="help-btn" aria-label="How to play">?</button>
+    <div class="greek-border" id="greek-border-left"></div>
     <h1 class="title">SISYPHUS</h1>
+    <div class="greek-border" id="greek-border-right"></div>
     <button class="header-btn" id="menu-btn" aria-label="Menu">
       <span class="hamburger"></span>
     </button>
   </header>
 
-  <!-- Main game area -->
+  <!-- MIDDLE: Game area -->
   <main class="game-container">
-    <!-- Sky background -->
-    <div class="sky-layer"></div>
-
-    <!-- Parallax mountain layers -->
-    <svg class="parallax-layer mountains-far" viewBox="0 0 800 400" preserveAspectRatio="xMidYMax slice">
-      <!-- Distant mountains - will be populated -->
-    </svg>
-
-    <svg class="parallax-layer mountains-mid" viewBox="0 0 800 400" preserveAspectRatio="xMidYMax slice">
-      <!-- Mid-distance mountains -->
-    </svg>
+    <!-- Background layer -->
+    <div class="bg-layer"></div>
 
     <!-- The hill / ground -->
-    <svg class="parallax-layer ground" viewBox="0 0 800 600" preserveAspectRatio="xMidYMax slice">
+    <svg class="ground-layer" viewBox="0 0 800 600" preserveAspectRatio="xMidYMax slice">
       <!-- The slope Sisyphus climbs -->
     </svg>
 
@@ -44,12 +37,16 @@
         <!-- Stickman figure -->
       </svg>
     </div>
+  </main>
 
-    <!-- Height indicator -->
+  <!-- BOTTOM: Footer bar -->
+  <footer class="footer">
+    <div class="greek-border" id="greek-border-footer-left"></div>
     <div class="height-display">
       <span id="height-value">0</span>m
     </div>
-  </main>
+    <div class="greek-border" id="greek-border-footer-right"></div>
+  </footer>
 
   <!-- Modals will go here -->
   <div class="modal" id="help-modal">
@@ -66,6 +63,7 @@
   <div class="modal" id="menu-modal">
     <div class="modal-content">
       <h2>Menu</h2>
+      <button class="menu-option" id="theme-btn">Toggle Theme</button>
       <button class="menu-option" id="scoreboard-btn">Scoreboard</button>
       <button class="menu-option" id="about-btn">About</button>
       <button class="modal-close" id="menu-close">Close</button>
