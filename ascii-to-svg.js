@@ -1,11 +1,11 @@
 /**
- * ASCII Grid to SVG converter - Stroke-based approach
+ * ASCII Grid to SVG converter
  *
- * Converts ASCII grids to SVG paths with configurable stroke width.
- * This cleanly separates line thickness from spacing.
+ * --line N   = line thickness (pixels)
+ * --spacing N = grid cell spacing (pixels)
  *
- * Usage:
- *   node ascii-to-svg.js --line 2 --spacing 3
+ * For tiling: only FULL-WIDTH horizontal runs and FULL-HEIGHT vertical runs
+ * extend to tile boundaries. Internal pattern lines don't extend.
  */
 
 const fs = require('fs');
@@ -52,27 +52,42 @@ function findVerticalRuns(grid) {
   return runs;
 }
 
-/**
- * Convert a run to a stroke path segment.
- * The path goes through the CENTER of where the filled cells would be.
- */
-function runToPath(run, spacing) {
-  const half = spacing / 2;
-  if (run.dir === 'h') {
-    const y = run.y * spacing + half;
-    const x1 = run.x * spacing;
-    const x2 = (run.x + run.length) * spacing;
-    return `M${x1},${y}H${x2}`;
-  } else {
-    const x = run.x * spacing + half;
-    const y1 = run.y * spacing;
-    const y2 = (run.y + run.length) * spacing;
-    return `M${x},${y1}V${y2}`;
-  }
+function runsToRects(runs, lineWidth, spacing, gridWidth, gridHeight) {
+  return runs.map(run => {
+    if (run.dir === 'h') {
+      // Only extend if this run spans FULL width (starts at 0, ends at gridWidth)
+      const isFullWidth = run.x === 0 && run.length === gridWidth;
+      const width = isFullWidth
+        ? gridWidth * spacing
+        : (run.length - 1) * spacing + lineWidth;
+      return {
+        x: run.x * spacing,
+        y: run.y * spacing,
+        width,
+        height: lineWidth
+      };
+    } else {
+      // Only extend if this run spans FULL height
+      const isFullHeight = run.y === 0 && run.length === gridHeight;
+      const height = isFullHeight
+        ? gridHeight * spacing
+        : (run.length - 1) * spacing + lineWidth;
+      return {
+        x: run.x * spacing,
+        y: run.y * spacing,
+        width: lineWidth,
+        height
+      };
+    }
+  });
+}
+
+function rectsToPath(rects) {
+  return rects.map(r => `M${r.x},${r.y}h${r.width}v${r.height}h${-r.width}z`).join('');
 }
 
 function asciiToSvg(ascii, options = {}) {
-  const { lineWidth = 2, spacing = 3, id = null } = options;
+  const { lineWidth = 3, spacing = 3, id = null } = options;
 
   const grid = parseAsciiGrid(ascii);
   const gridHeight = grid.length;
@@ -81,58 +96,51 @@ function asciiToSvg(ascii, options = {}) {
   const hRuns = findHorizontalRuns(grid);
   const vRuns = findVerticalRuns(grid);
 
-  const pathSegments = [
-    ...hRuns.map(r => runToPath(r, spacing)),
-    ...vRuns.map(r => runToPath(r, spacing))
+  const rects = [
+    ...runsToRects(hRuns, lineWidth, spacing, gridWidth, gridHeight),
+    ...runsToRects(vRuns, lineWidth, spacing, gridWidth, gridHeight)
   ];
 
-  const pathD = pathSegments.join('');
+  const pathD = rectsToPath(rects);
   const svgWidth = gridWidth * spacing;
   const svgHeight = gridHeight * spacing;
   const idAttr = id ? ` id="${id}"` : '';
 
   return `<svg${idAttr} width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}" xmlns="http://www.w3.org/2000/svg">
-  <path d="${pathD}" stroke="currentColor" stroke-width="${lineWidth}" fill="none" stroke-linecap="square"/>
+  <path d="${pathD}" fill="currentColor"/>
 </svg>`;
 }
 
-function processFile(inputPath, outputPath, options = {}) {
+function processFile(inputPath, outputPath, options) {
   const ascii = fs.readFileSync(inputPath, 'utf-8');
   const svg = asciiToSvg(ascii, options);
   fs.writeFileSync(outputPath, svg);
   console.log(`Created: ${outputPath}`);
 }
 
-function processAllFiles(options = {}) {
+function processAllFiles(options) {
   const baseDir = __dirname;
   const assetsDir = path.join(baseDir, 'assets', 'borders');
-  if (!fs.existsSync(assetsDir)) {
-    fs.mkdirSync(assetsDir, { recursive: true });
-  }
+  if (!fs.existsSync(assetsDir)) fs.mkdirSync(assetsDir, { recursive: true });
 
-  const files = ['border-left', 'border-middle', 'border-right', 'hamburger', 'question-mark'];
-  for (const file of files) {
-    const inputPath = path.join(baseDir, `${file}.txt`);
-    if (fs.existsSync(inputPath)) {
-      const outputPath = path.join(assetsDir, `${file}.svg`);
-      processFile(inputPath, outputPath, { ...options, id: file });
+  ['border-left', 'border-middle', 'border-right', 'hamburger', 'question-mark'].forEach(file => {
+    const input = path.join(baseDir, `${file}.txt`);
+    if (fs.existsSync(input)) {
+      processFile(input, path.join(assetsDir, `${file}.svg`), { ...options, id: file });
     }
-  }
+  });
 }
 
 if (require.main === module) {
   const args = process.argv.slice(2);
-  const options = { lineWidth: 2, spacing: 3 };
+  const options = { lineWidth: 3, spacing: 3 };
 
   for (let i = 0; i < args.length; i++) {
-    if (args[i] === '--line' || args[i] === '-l') {
-      options.lineWidth = parseFloat(args[++i]);
-    } else if (args[i] === '--spacing' || args[i] === '-s') {
-      options.spacing = parseFloat(args[++i]);
-    }
+    if (args[i] === '--line' || args[i] === '-l') options.lineWidth = parseFloat(args[++i]);
+    else if (args[i] === '--spacing' || args[i] === '-s') options.spacing = parseFloat(args[++i]);
   }
 
-  console.log(`Line width: ${options.lineWidth}px, Spacing: ${options.spacing}px`);
+  console.log(`Line: ${options.lineWidth}px, Spacing: ${options.spacing}px`);
   processAllFiles(options);
   console.log('Done!');
 }
