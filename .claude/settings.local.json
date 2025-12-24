@@ -5,7 +5,8 @@
       "Bash(curl:*)",
       "Bash(ls:*)",
       "Bash(node ascii-to-svg.js:*)",
-      "Bash(head:*)"
+      "Bash(head:*)",
+      "Bash(node:*)"
     ]
   }
 }

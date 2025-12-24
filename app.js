@@ -80,11 +80,12 @@ async function initGreekBorders() {
     loadSvg('assets/borders/border-right.svg')
   ]);
 
-  // Tile widths: cells * spacing (for proper grid alignment)
-  // At spacing 3: 10*3=30, 8*3=24, 11*3=33
-  const leftCapWidth = 30;
-  const middleWidth = 24;
-  const rightCapWidth = 33;
+  // Tile widths scaled to match CSS height (20px instead of 33px)
+  // Original at 33px: 30, 24, 33. Scale factor: 20/33
+  const scale = 20 / 33;
+  const leftCapWidth = 30 * scale;   // ~18.2px
+  const middleWidth = 24 * scale;    // ~14.5px
+  const rightCapWidth = 33 * scale;  // 20px
   const capsWidth = leftCapWidth + rightCapWidth;
 
   function buildBorder(container) {
@@ -94,7 +95,6 @@ async function initGreekBorders() {
     const spaceForMiddles = availableWidth - capsWidth;
     const tilesNeeded = Math.max(0, Math.floor(spaceForMiddles / middleWidth));
 
-    // Build: left-cap + middle×N + right-cap
     container.innerHTML = leftCap + middleTile.repeat(tilesNeeded) + rightCap;
     container.style.display = 'flex';
   }
@@ -414,6 +414,9 @@ function initSVGs() {
     />
   `;
 }
+
+// Recalculate borders on resize
+window.addEventListener('resize', initGreekBorders);
 
 // Start the game when DOM is ready
 document.addEventListener('DOMContentLoaded', init);
