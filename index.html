@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sisyphus</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <button class="header-btn" id="help-btn" aria-label="How to play">?</button>
+    <h1 class="title">SISYPHUS</h1>
+    <button class="header-btn" id="menu-btn" aria-label="Menu">
+      <span class="hamburger"></span>
+    </button>
+  </header>
+
+  <!-- Main game area -->
+  <main class="game-container">
+    <!-- Sky background -->
+    <div class="sky-layer"></div>
+
+    <!-- Parallax mountain layers -->
+    <svg class="parallax-layer mountains-far" viewBox="0 0 800 400" preserveAspectRatio="xMidYMax slice">
+      <!-- Distant mountains - will be populated -->
+    </svg>
+
+    <svg class="parallax-layer mountains-mid" viewBox="0 0 800 400" preserveAspectRatio="xMidYMax slice">
+      <!-- Mid-distance mountains -->
+    </svg>
+
+    <!-- The hill / ground -->
+    <svg class="parallax-layer ground" viewBox="0 0 800 600" preserveAspectRatio="xMidYMax slice">
+      <!-- The slope Sisyphus climbs -->
+    </svg>
+
+    <!-- Sisyphus and boulder (fixed position) -->
+    <div class="sisyphus-container">
+      <svg class="boulder" viewBox="0 0 100 100" id="boulder">
+        <!-- Boulder shape -->
+      </svg>
+      <svg class="stickman" viewBox="0 0 100 150" id="stickman">
+        <!-- Stickman figure -->
+      </svg>
+    </div>
+
+    <!-- Height indicator -->
+    <div class="height-display">
+      <span id="height-value">0</span>m
+    </div>
+  </main>
+
+  <!-- Modals will go here -->
+  <div class="modal" id="help-modal">
+    <div class="modal-content">
+      <h2>How to Play</h2>
+      <p>Click the boulder to push it up the hill.</p>
+      <p>Come back every day to keep pushing.</p>
+      <p>Miss a day and it rolls all the way back down.</p>
+      <p>What's the point? Exactly.</p>
+      <button class="modal-close" id="help-close">Got it</button>
+    </div>
+  </div>
+
+  <div class="modal" id="menu-modal">
+    <div class="modal-content">
+      <h2>Menu</h2>
+      <button class="menu-option" id="scoreboard-btn">Scoreboard</button>
+      <button class="menu-option" id="about-btn">About</button>
+      <button class="modal-close" id="menu-close">Close</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
