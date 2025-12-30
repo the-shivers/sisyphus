@@ -70,6 +70,73 @@
     </div>
   </div>
 
+  <!-- Debug Time Machine (DEV_MODE only) -->
+  <div class="debug-panel" id="debug-panel">
+    <div class="debug-title">Time Machine</div>
+    <div class="debug-row">
+      <label>Date</label>
+      <input type="date" id="debug-date">
+    </div>
+    <div class="debug-row">
+      <label>Time</label>
+      <input type="time" id="debug-time">
+    </div>
+    <div class="debug-row">
+      <label>UTC Offset</label>
+      <select id="debug-timezone">
+        <option value="-12">UTC-12</option>
+        <option value="-11">UTC-11</option>
+        <option value="-10">UTC-10 (Hawaii)</option>
+        <option value="-9">UTC-9 (Alaska)</option>
+        <option value="-8">UTC-8 (Pacific)</option>
+        <option value="-7">UTC-7 (Mountain)</option>
+        <option value="-6">UTC-6 (Central)</option>
+        <option value="-5">UTC-5 (Eastern)</option>
+        <option value="-4">UTC-4 (Atlantic)</option>
+        <option value="-3">UTC-3</option>
+        <option value="-2">UTC-2</option>
+        <option value="-1">UTC-1</option>
+        <option value="0">UTC+0 (London)</option>
+        <option value="1">UTC+1 (Paris)</option>
+        <option value="2">UTC+2</option>
+        <option value="3">UTC+3 (Moscow)</option>
+        <option value="4">UTC+4</option>
+        <option value="5">UTC+5</option>
+        <option value="5.5">UTC+5:30 (India)</option>
+        <option value="6">UTC+6</option>
+        <option value="7">UTC+7</option>
+        <option value="8">UTC+8 (China)</option>
+        <option value="9">UTC+9 (Japan)</option>
+        <option value="10">UTC+10 (Sydney)</option>
+        <option value="11">UTC+11</option>
+        <option value="12">UTC+12 (NZ)</option>
+      </select>
+    </div>
+    <div class="debug-row">
+      <label>Simulated "Today"</label>
+      <div id="debug-result">--</div>
+    </div>
+    <div class="debug-row">
+      <label>Last Played</label>
+      <div id="debug-last-played">--</div>
+    </div>
+    <div class="debug-row">
+      <label>Height / Rollback</label>
+      <div id="debug-state-info">--</div>
+    </div>
+    <div class="debug-buttons">
+      <button id="debug-prev-day">-1 Day</button>
+      <button id="debug-next-day">+1 Day</button>
+      <button id="debug-reset">Reset to Now</button>
+    </div>
+    <div class="debug-row">
+      <button id="debug-reload-state">Reload State</button>
+    </div>
+    <div class="debug-row">
+      <button id="debug-new-player">New Player (Reset All)</button>
+    </div>
+  </div>
+
   <script src="app.js"></script>
 </body>
 </html>

@@ -69,17 +69,17 @@ body {
 /* === HEADER === */
 .header {
   flex-shrink: 0;
-  height: 24px;
+  height: 40px;
   display: flex;
   align-items: center;
-  padding: 0 2px;
-  gap: 2px;
+  padding: 0 4px;
+  gap: 4px;
   background: var(--bg);
 }
 
 .title {
   font-family: var(--title-font), serif;
-  font-size: 1rem;
+  font-size: 1.4rem;
   font-weight: 400;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -95,7 +95,7 @@ body {
 }
 
 .greek-border {
-  height: 20px;
+  height: 33px;
   flex: 1;
   overflow: hidden;
   display: flex;
@@ -103,7 +103,7 @@ body {
 }
 
 .greek-border svg {
-  height: 20px;
+  height: 33px;
   width: auto;
 }
 
@@ -125,8 +125,8 @@ body {
 .header-btn {
   all: unset;
   flex-shrink: 0;
-  width: 20px;
-  height: 20px;
+  width: 33px;
+  height: 33px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -136,8 +136,8 @@ body {
 }
 
 .header-btn svg {
-  width: 20px;
-  height: 20px;
+  width: 33px;
+  height: 33px;
   border: none;
   outline: none;
 }
@@ -231,11 +231,11 @@ body {
 /* === FOOTER === */
 .footer {
   flex-shrink: 0;
-  height: 24px;
+  height: 40px;
   display: flex;
   align-items: center;
-  padding: 0 2px;
-  gap: 2px;
+  padding: 0 4px;
+  gap: 4px;
   background: var(--bg);
 }
 
@@ -312,5 +312,91 @@ body {
 .menu-option:hover {
   background: var(--fg);
   color: var(--bg);
+}
+
+/* === DEBUG PANEL (DEV_MODE only) === */
+.debug-panel {
+  display: none; /* Hidden by default, shown via JS in DEV_MODE */
+  position: fixed;
+  bottom: 50px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.9);
+  color: #0f0;
+  font-family: monospace;
+  font-size: 12px;
+  padding: 12px;
+  border: 1px solid #0f0;
+  border-radius: 4px;
+  z-index: 9999;
+  min-width: 220px;
+}
+
+.debug-panel.visible {
+  display: block;
+}
+
+.debug-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #0f0;
+  border-bottom: 1px solid #0f0;
+  padding-bottom: 5px;
+}
+
+.debug-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 10px;
+}
+
+.debug-row label {
+  flex-shrink: 0;
+}
+
+.debug-row input,
+.debug-row select {
+  background: #000;
+  color: #0f0;
+  border: 1px solid #0f0;
+  padding: 4px;
+  font-family: monospace;
+  font-size: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.debug-row select {
+  max-width: 130px;
+}
+
+#debug-result {
+  color: #ff0;
+  font-weight: bold;
+}
+
+.debug-buttons {
+  display: flex;
+  gap: 5px;
+  margin: 10px 0;
+}
+
+.debug-buttons button,
+.debug-row button {
+  background: #000;
+  color: #0f0;
+  border: 1px solid #0f0;
+  padding: 5px 10px;
+  font-family: monospace;
+  font-size: 11px;
+  cursor: pointer;
+  flex: 1;
+}
+
+.debug-buttons button:hover,
+.debug-row button:hover {
+  background: #0f0;
+  color: #000;
 }
 
